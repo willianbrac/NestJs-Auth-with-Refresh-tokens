@@ -1,7 +1,9 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
+import { DatabaseModule } from 'src/database/database.module';
+import { UsersModule } from '../users/users.module';
 import { authConfig } from './config/auth.config';
 import { LoginController } from './controllers/login.controller';
 import { LogoutController } from './controllers/logout.controller';
@@ -21,7 +23,13 @@ import { LocalStrategy } from './strategies/local.strategy';
 import { RefreshStrategy } from './strategies/refresh.strategy';
 
 @Module({
-  imports: [ConfigModule, PassportModule, JwtModule.registerAsync(authConfig)],
+  imports: [
+    ConfigModule,
+    PassportModule,
+    UsersModule,
+    JwtModule.registerAsync(authConfig),
+    DatabaseModule,
+  ],
   controllers: [
     LoginController,
     LogoutController,

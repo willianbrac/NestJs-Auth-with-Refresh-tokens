@@ -1,4 +1,5 @@
 import { forwardRef, Module } from '@nestjs/common';
+import { DatabaseModule } from 'src/database/database.module';
 import { AuthModule } from '../auth/auth.module';
 import { DeleteUserController } from './controllers/delete-user.controller';
 import { FindUserController } from './controllers/find-user.controller';
@@ -13,7 +14,7 @@ import { ListUsersService } from './services/list-users.service';
 import { UpdateUserService } from './services/update-user.service';
 
 @Module({
-  imports: [AuthModule, forwardRef(() => AuthModule)],
+  imports: [AuthModule, forwardRef(() => AuthModule), DatabaseModule],
   controllers: [
     UpdateUserController,
     ListUsersController,
