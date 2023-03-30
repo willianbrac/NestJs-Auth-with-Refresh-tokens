@@ -1,10 +1,11 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { LoginDto } from '../dtos/auth-login.dto';
+import { GenerateRefreshTokenService } from './generate-refresh-token.service';
 import { GenerateAccessTokenService } from './gerate-access-token.service';
 import { ValidateUserService } from './validate-user.service';
 
 @Injectable()
-export class GenerateRefreshTokenService {
+export class LoginService {
   constructor(
     private readonly validateUser: ValidateUserService,
     private readonly generateAccessToken: GenerateAccessTokenService,

@@ -1,31 +1,63 @@
-import { forwardRef, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { TypeOrmModule } from '@nestjs/typeorm';
-
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-
-import { authConfig } from 'src/config/auth.config';
-import { AuthController } from './auth.controller';
-import { AuthService } from './auth.service';
-
-import { RefreshToken } from './entities/refreshToken.entity';
-
-import { JwtStrategy } from './jwt/jwt.strategy';
-import { LocalStrategy } from './jwt/local.strategy';
-import { RefreshStrategy } from './jwt/refresh.strategy';
-import { UsersModule } from 'src/users/users.module';
+import { authConfig } from './config/auth.config';
+import { LoginController } from './controllers/login.controller';
+import { LogoutController } from './controllers/logout.controller';
+import { RefreshTokenController } from './controllers/refresh-token.controller';
+import { RegisterUserController } from './controllers/register-user.controller';
+import { DeleteRefreshTokenService } from './services/delete-refresh-token.service';
+import { GenerateRefreshTokenService } from './services/generate-refresh-token.service';
+import { GenerateTokenFromRefreshTokenService } from './services/generate-token-from-refresh-token.service';
+import { GenerateAccessTokenService } from './services/gerate-access-token.service';
+import { GetUserFromRefreshTokenService } from './services/get-user-from-refresh-token.service';
+import { LoginService } from './services/login.service';
+import { RegisterUserService } from './services/register-user.service';
+import { ValidateRefreshTokenService } from './services/validate-refresh-token.service';
+import { ValidateUserService } from './services/validate-user.service';
+import { JwtStrategy } from './strategies/jwt.strategy';
+import { LocalStrategy } from './strategies/local.strategy';
+import { RefreshStrategy } from './strategies/refresh.strategy';
 
 @Module({
-  imports: [
-    ConfigModule,
-    PassportModule,
-    JwtModule.registerAsync(authConfig),
-    TypeOrmModule.forFeature([RefreshToken]),
-    forwardRef(() => UsersModule),
+  imports: [ConfigModule, PassportModule, JwtModule.registerAsync(authConfig)],
+  controllers: [
+    LoginController,
+    LogoutController,
+    RefreshTokenController,
+    RegisterUserController,
   ],
-  controllers: [AuthController],
-  providers: [AuthService, JwtStrategy, LocalStrategy, RefreshStrategy],
-  exports: [AuthService, LocalStrategy, JwtStrategy, RefreshStrategy],
+  providers: [
+    JwtStrategy,
+    LocalStrategy,
+    RefreshStrategy,
+    ValidateUserService,
+    ValidateRefreshTokenService,
+    RegisterUserService,
+    LoginService,
+    GetUserFromRefreshTokenService,
+    GenerateAccessTokenService,
+    GenerateTokenFromRefreshTokenService,
+    GenerateRefreshTokenService,
+    DeleteRefreshTokenService,
+  ],
+  exports: [
+    LocalStrategy,
+    JwtStrategy,
+    RefreshStrategy,
+    JwtStrategy,
+    LocalStrategy,
+    RefreshStrategy,
+    ValidateUserService,
+    ValidateRefreshTokenService,
+    RegisterUserService,
+    LoginService,
+    GetUserFromRefreshTokenService,
+    GenerateAccessTokenService,
+    GenerateTokenFromRefreshTokenService,
+    GenerateRefreshTokenService,
+    DeleteRefreshTokenService,
+  ],
 })
 export class AuthModule {}

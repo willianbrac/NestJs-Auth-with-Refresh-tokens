@@ -4,11 +4,11 @@ import { PrismaService } from 'src/database/prisma.service';
 import { CreateUserDto } from '../dtos/create-user.dto';
 import { UpdateUserDto } from '../dtos/update-user.dto';
 import { User } from '../entities/user.entity';
-import { IUsersRepository } from './IUserRepository';
+import { IUsersRepository } from './IUsersRepository';
 
 @Injectable()
-export class PrismaUsersRepository implements IUsersRepository {
-  constructor(private prisma: PrismaService) {}
+export class UsersRepository implements IUsersRepository {
+  constructor(private readonly prisma: PrismaService) {}
 
   async create(data: CreateUserDto): Promise<User> {
     const salt = await genSalt();

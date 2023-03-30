@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { UpdateUserDto } from '../dtos/update-user.dto';
-import { IUsersRepository } from '../repositories/IUserRepository';
+import { IUsersRepository } from '../repositories/IUsersRepository';
 import {
   UsernameOrEmailAlreadExists,
   UserNotFound,
