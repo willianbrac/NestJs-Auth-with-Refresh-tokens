@@ -1,6 +1,10 @@
-import { Controller, Post, Body, Req } from '@nestjs/common';
+import { Controller, Post, Body, Req, Get, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dtos/auth-login.dto';
+import { AuthGuard } from '@nestjs/passport';
+import { GetLoggedUser } from './decorators/get-logged-user.decorator';
+import { User } from '../users/entities/user.entity';
+import { GetUserDto } from '../users/dtos/user.get.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -22,5 +26,15 @@ export class AuthController {
     const bearerToken = req.headers.authorization;
     const token = bearerToken.replace(/^Bearer\s+/, '');
     return await this.authService.generateTokenFromRefreshToken(token);
+  }
+
+  @Get()
+  @UseGuards(AuthGuard())
+  public getSignedUserInfo(@GetLoggedUser() user: User): GetUserDto {
+    return {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+    };
   }
 }
